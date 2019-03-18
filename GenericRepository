@@ -1,0 +1,59 @@
+public interface IRepository<T> where T : class
+{
+   IEnumerable<T> GetModels();
+   
+   T GetModelByID(int modelId);
+   
+   void InsertModel(T model);
+   
+   void DeleteModel(T model);
+   
+   void UpdateModel(T model);
+   
+   void Save();
+}
+
+
+public class Repository<T> : IRepository<T> where T : class
+{
+   private RMSEntities dataContext;
+   private IDbSet<T> dbSet;
+   
+   public Repository()
+   {
+       dataContext = new RMSEntities();
+	   dbSet = dataContext.Set<T>();
+   }
+   
+   public IEnumerable<T> GetModels()
+   {
+       return dbSet.ToList();
+   }
+   
+   public T GetModelByID(int modelId)
+   {
+       return dbSet.Find(modelId);
+   }
+   
+   public InsertModel(T model)
+   {
+       return dbSet.Add(model);
+   }
+   
+   public DeleteModel(T model)
+   {
+       T model = dbSet.Find(modelId);
+       return dbSet.Remove(model);
+   }
+   
+   public UpdateModel(T model)
+   {
+       dataContext.Entry(model).State = EntityState.Modified;
+   }
+   
+   public UpdateModel(T model)
+   {
+       dataContext.SaveChanges();
+   }
+
+}
